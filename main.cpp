@@ -1,7 +1,9 @@
+#include "SFML/Graphics.hpp"
 #include "Game.h"
 
-int main(){
+int main()
+{
     Game game;
-    game.run;
-    return EXIT_SUCCESS;
+    game.run();
+
 }
