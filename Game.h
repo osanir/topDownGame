@@ -17,6 +17,7 @@ private:
     void processEvents();
     void update();
     void render();
+    void handlePlayerInput();
 
     Player player;
     sf::RenderWindow window;
