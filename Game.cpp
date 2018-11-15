@@ -1,28 +1,21 @@
 #include "Game.h"
 
-Game::Game() : window(sf::VideoMode(WIDTH, HEIGHT), "Name of Application")
-{
+Game::Game() : window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Top Down"){
     window.setFramerateLimit(60);
 }
 
-void Game::run()
-{
-    while (window.isOpen())
-    {
+void Game::run(){
+    while (window.isOpen()){
         processEvents();
         update();
         render();
-	//yasin deneme
     }
 }
 
-void Game::processEvents()
-{
+void Game::processEvents(){
     sf::Event event;
-    while (window.pollEvent(event))
-    {
-        switch (event.type)
-        {
+    while (window.pollEvent(event)){
+        switch (event.type){
         case sf::Event::Closed:
             window.close();
             break;
@@ -30,15 +23,15 @@ void Game::processEvents()
     }
 }
 
-void Game::update()
-{
+void Game::update(){
+    player.move( {1, 1} );
 }
 
 void Game::render()
 {
-    window.clear();
+    window.clear(Color::White);
 
-    //draw()
+    window.draw(player.getBody());
 
     window.display();
 }
