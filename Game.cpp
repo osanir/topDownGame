@@ -22,24 +22,9 @@ void Game::processEvents(){
                 window.close();
                 break;
             case Event::KeyReleased:
-                if( event.key.code == Keyboard::A )
-                    player.setDirection('A', false);
-                if( event.key.code == Keyboard::D )
-                    player.setDirection('D', false);
-                if( event.key.code == Keyboard::W )
-                    player.setDirection('W', false);
-                if( event.key.code == Keyboard::S )
-                    player.setDirection('S', false);
-                break;
+                handlePlayerInput(false);
             case Event::KeyPressed:
-                if(Keyboard::isKeyPressed(Keyboard::A) )
-                    player.setDirection('A', true);
-                if(Keyboard::isKeyPressed(Keyboard::D) )
-                    player.setDirection('D', true);
-                if(Keyboard::isKeyPressed(Keyboard::W) )
-                    player.setDirection('W', true);
-                if(Keyboard::isKeyPressed(Keyboard::S) )
-                    player.setDirection('S', true);                
+                handlePlayerInput(true);
                 break;
         }
     }
@@ -60,5 +45,25 @@ void Game::render()
 }
 
 void Game::handlePlayerInput(bool isPressed){
+    if( !isPressed ){
+        if( !Keyboard::isKeyPressed(Keyboard::A) )
+            player.setDirection('A', false);
+        if( !Keyboard::isKeyPressed(Keyboard::D) )
+            player.setDirection('D', false);
+        if( !Keyboard::isKeyPressed(Keyboard::W) )
+            player.setDirection('W', false);
+        if( !Keyboard::isKeyPressed(Keyboard::S) )
+            player.setDirection('S', false);
+    }
 
+    if( isPressed ){
+        if( Keyboard::isKeyPressed(Keyboard::A) )
+            player.setDirection('A', true);
+        if( Keyboard::isKeyPressed(Keyboard::D) )
+            player.setDirection('D', true);
+        if( Keyboard::isKeyPressed(Keyboard::W) )
+            player.setDirection('W', true);
+        if( Keyboard::isKeyPressed(Keyboard::S) )
+            player.setDirection('S', true);                
+    }
 }
