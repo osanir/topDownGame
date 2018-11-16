@@ -1,19 +1,37 @@
+#include <iostream>
+#include <string>
 #include <SFML/Graphics.hpp>
+#include <list>
 #include <cmath>
 
 using namespace sf;
 using namespace std;
 
+struct Bullet{
+    CircleShape body;
+    Vector2f direction;
+    float speed = 4;
+};
+
+/*
+struct Gun{
+    string name;
+    int fireRate;
+    int capasity;
+};
+*/
+
 class Player{
 public:
     Player();
     void init();
-    void move(Vector2f);
     void update(RenderWindow *window);
-    void fire();
     void setDirection( char direction , bool isPressed);
+    void move(Vector2f);
+    void fire();
     RectangleShape getBody();
     RectangleShape getGun();
+    list<Bullet> getBullets();
 
 private:
     float lerp(float x, float y, float z);
@@ -21,6 +39,8 @@ private:
 
     RectangleShape body;
     RectangleShape gun;
+    list<Bullet> bullets;
+
     const float MAXSPEED = 5;
     const float SPEED    = 0.5;
     Vector2f velocity;

@@ -36,25 +36,17 @@ void Player::update(RenderWindow *window){
     body.setRotation(getAngleTowardPosition(window));
     gun.setRotation(body.getRotation());
     gun.setPosition(body.getPosition());
+    list<Bullet>::iterator iter = bullets.begin();
+    while( iter != bullets.end() ){
+        iter->body.move(iter->direction);
+        // TODO: DESTROY BULLETS WHICH ARE OUTSIDE THE WINDOW
+        /*if( iter->body.getPosition().x > window->getSize().x || iter->body.getPosition().x < 0 || iter->body.getPosition().y > window->getSize().y || iter->body.getPosition().x < 0){
+            bullets.remove(iter);
+        }*/
+        iter++;
+    }
+    cout << bullets.size() << endl;
 }
-
-void Player::move(Vector2f direction){
-    body.move(direction);
-    gun.setPosition( {body.getPosition().x, body.getPosition().y} );
-}
-
-void Player::fire(){
-
-}
-
-RectangleShape Player::getBody(){
-    return body;
-}
-
-RectangleShape Player::getGun(){
-    return gun;
-}
-
 
 void Player::setDirection( char direction , bool isPressed){
     switch (direction){
@@ -86,6 +78,47 @@ void Player::setDirection( char direction , bool isPressed){
             break;
     }
 }
+
+void Player::move(Vector2f direction){
+    // TODO: FIX DIAGONAL MOVEMENT SPEED
+    body.move(direction);
+    gun.setPosition( {body.getPosition().x, body.getPosition().y} );
+}
+
+void Player::fire(){
+    // TODO: SET FIRE RATE
+    Bullet newBullet;
+    newBullet.body.setRadius(5);
+    newBullet.body.setFillColor(Color::Black);
+    newBullet.body.setOrigin({newBullet.body.getRadius(), newBullet.body.getRadius()});
+    newBullet.body.setPosition(gun.getTransform().transformPoint( {gun.getSize().x, newBullet.body.getRadius()/2} ));
+    
+    float x1 = gun.getTransform().transformPoint( {gun.getSize().x, 0}).x;
+    float y1 = gun.getTransform().transformPoint( {gun.getSize().x, 0}).y;
+    float x  = gun.getTransform().transformPoint( {0, 0}).x;
+    float y  = gun.getTransform().transformPoint( {0, 0}).y;
+    float dirX = ((x1-x)/gun.getSize().x)*newBullet.speed;
+    float dirY = ((y1-y)/gun.getSize().x)*newBullet.speed;
+
+    newBullet.direction = Vector2f( dirX, dirY );
+    bullets.push_back( newBullet );
+}
+
+// GET
+
+RectangleShape Player::getBody(){
+    return body;
+}
+
+RectangleShape Player::getGun(){
+    return gun;
+}
+
+list<Bullet> Player::getBullets(){
+    return bullets;
+}
+
+// PRIVATE FUNCTIONS
 
 float Player::lerp(float x, float y, float z) {
     return ((1.0f - z) * x) + (z * y);      

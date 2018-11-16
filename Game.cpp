@@ -23,10 +23,15 @@ void Game::processEvents(){
                 break;
             case Event::KeyReleased:
                 handlePlayerInput(false);
+                break;
             case Event::KeyPressed:
                 handlePlayerInput(true);
                 break;
+            default:
+                break;
         }
+        if(Mouse::isButtonPressed(Mouse::Button::Left))
+            player.fire();
     }
 }
 
@@ -41,11 +46,17 @@ void Game::render()
     window.draw(player.getBody());
     window.draw(player.getGun());
 
+    list<Bullet> bullets = player.getBullets();
+    list<Bullet>::iterator iter = bullets.begin();
+    while( iter != bullets.end() ){
+        window.draw(iter->body);
+        iter++;
+    }
     window.display();
 }
 
-void Game::handlePlayerInput(bool isPressed){
-    if( !isPressed ){
+void Game::handlePlayerInput(bool keyIsPressed){
+    if( !keyIsPressed ){
         if( !Keyboard::isKeyPressed(Keyboard::A) )
             player.setDirection('A', false);
         if( !Keyboard::isKeyPressed(Keyboard::D) )
@@ -56,7 +67,7 @@ void Game::handlePlayerInput(bool isPressed){
             player.setDirection('S', false);
     }
 
-    if( isPressed ){
+    if( keyIsPressed ){
         if( Keyboard::isKeyPressed(Keyboard::A) )
             player.setDirection('A', true);
         if( Keyboard::isKeyPressed(Keyboard::D) )
