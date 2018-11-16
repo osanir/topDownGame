@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+
 #include "Player.h"
 
 #define SCREEN_WIDTH 1024
@@ -17,8 +18,8 @@ private:
     void processEvents();
     void update();
     void render();
-    void handlePlayerInput();
+    void handlePlayerInput(bool isPressed);
 
     Player player;
-    sf::RenderWindow window;
+    RenderWindow window;
 };
