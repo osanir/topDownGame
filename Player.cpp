@@ -3,7 +3,7 @@
 Player::Player(){
     body.setRadius( 10 );
     body.setOrigin( {body.getRadius(), body.getRadius()} );
-    body.setPosition( {0, 0} );
+    body.setPosition( {100, 100} );
     body.setFillColor(Color::Black);
 
     gun.setSize( {body.getRadius()*2, body.getRadius()/2} );
@@ -45,7 +45,6 @@ void Player::update(RenderWindow *window){
         }*/
         iter++;
     }
-    cout << bullets.size() << endl;
     
     CircleShape shape(10);
     shape.setFillColor(Color::Cyan);

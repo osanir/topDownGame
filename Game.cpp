@@ -38,12 +38,13 @@ void Game::processEvents(){
 void Game::update(){
     player.update(&window);
     player.collision(map.getSolidObjets());
+    cout<<map.getSolidObjets().size()<<endl;
 }
 
 void Game::render()
 {
     window.clear(Color::White);
-
+    map.drawTile(window);
     window.draw(player.getBody());
     window.draw(player.getGun());
 
@@ -54,10 +55,10 @@ void Game::render()
         iter++;
     }
 
-    for(auto iter : map.getSolidObjets() ){
+/*     for(auto iter : map.getSolidObjets() ){
         window.draw(*iter);
     }
-    window.display();
+ */    window.display();
 }
 
 void Game::handlePlayerInput(bool keyIsPressed){
