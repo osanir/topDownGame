@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Player.h"
+#include "Map.h"
 
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
@@ -22,4 +23,5 @@ private:
 
     Player player;
     RenderWindow window;
+    Map map;
 };

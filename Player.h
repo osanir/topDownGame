@@ -29,7 +29,8 @@ public:
     void setDirection( char direction , bool isPressed);
     void move(Vector2f);
     void fire();
-    RectangleShape getBody();
+    void collision(list<RectangleShape*>);
+    CircleShape getBody();
     RectangleShape getGun();
     list<Bullet> getBullets();
 
@@ -37,7 +38,7 @@ private:
     float lerp(float x, float y, float z);
     float getAngleTowardPosition(RenderWindow *window);
 
-    RectangleShape body;
+    CircleShape body;
     RectangleShape gun;
     list<Bullet> bullets;
 

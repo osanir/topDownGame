@@ -37,6 +37,7 @@ void Game::processEvents(){
 
 void Game::update(){
     player.update(&window);
+    player.collision(map.getSolidObjets());
 }
 
 void Game::render()
@@ -51,6 +52,10 @@ void Game::render()
     while( iter != bullets.end() ){
         window.draw(iter->body);
         iter++;
+    }
+
+    for(auto iter : map.getSolidObjets() ){
+        window.draw(*iter);
     }
     window.display();
 }

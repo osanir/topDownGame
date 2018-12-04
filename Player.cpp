@@ -1,12 +1,12 @@
 #include "Player.h"
 
 Player::Player(){
-    body.setSize( {20, 20} );
-    body.setOrigin( {body.getSize().x/2, body.getSize().y/2} );
+    body.setRadius( 10 );
+    body.setOrigin( {body.getRadius(), body.getRadius()} );
     body.setPosition( {0, 0} );
     body.setFillColor(Color::Black);
 
-    gun.setSize( {body.getSize().x, body.getSize().y/4} );
+    gun.setSize( {body.getRadius()*2, body.getRadius()/2} );
     gun.setOrigin( {0, gun.getSize().y/2} );
     gun.setPosition( body.getOrigin() );
     gun.setFillColor(Color::Red);
@@ -46,6 +46,11 @@ void Player::update(RenderWindow *window){
         iter++;
     }
     cout << bullets.size() << endl;
+    
+    CircleShape shape(10);
+    shape.setFillColor(Color::Cyan);
+    
+    window->draw( shape );
 }
 
 void Player::setDirection( char direction , bool isPressed){
@@ -104,9 +109,17 @@ void Player::fire(){
     bullets.push_back( newBullet );
 }
 
+void Player::collision(list<RectangleShape*> gameObjects){
+    for( auto iter : gameObjects){
+        if( body.getGlobalBounds().intersects(iter->getGlobalBounds()))
+            body.move({-velocity.x, -velocity.y});
+    }
+}
+
+
 // GET
 
-RectangleShape Player::getBody(){
+CircleShape Player::getBody(){
     return body;
 }
 
