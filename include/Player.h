@@ -1,12 +1,8 @@
-#include <iostream>
 #include <string>
-#include <SFML/Graphics.hpp>
 #include <list>
 #include <cmath>
+#include "GameEngine.h"
 
-
-using namespace sf;
-using namespace std;
 
 struct Bullet{
     CircleShape body;

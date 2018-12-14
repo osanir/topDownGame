@@ -1,4 +1,4 @@
-#include "Player.h"
+#include "../include/Player.h"
 
 Player::Player(){
     body.setRadius( 10 );
@@ -112,7 +112,6 @@ void Player::collision(list<RectangleShape*> gameObjects){
     for( auto iter : gameObjects){
         if( body.getGlobalBounds().intersects(iter->getGlobalBounds()))
             body.move({-velocity.x, -velocity.y});
-            
     }
 }
 

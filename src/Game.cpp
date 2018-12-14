@@ -1,16 +1,9 @@
-#include "Game.h"
+#include "../include/Game.h"
 
 Game::Game() : window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Top Down"){
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60);
     window.setKeyRepeatEnabled(true);
-
-    view.reset(FloatRect(0,0 , SCREEN_WIDTH , SCREEN_HEIGHT));
-    view.setViewport(FloatRect(0 , 0 , 1.0f , 1.0f));
-
-    position.x = SCREEN_WIDTH/2;
-    position.y = SCREEN_HEIGHT/2;
-
 }
 
 void Game::run(){
@@ -46,22 +39,14 @@ void Game::processEvents(){
 void Game::update(){
     player.update(&window);
     player.collision(map.getSolidObjets());
-    cout<<map.getSolidObjets().size()<<endl;
+    camera.update(player.getBody().getPosition());
 }
 
 void Game::render()
 {
-    //ayrı bir fonksiyon yazılacak
-    if(player.getBody().getPosition().x > SCREEN_WIDTH/2)
-        position.x = player.getBody().getPosition().x;
-    else 
-        position.x = SCREEN_WIDTH/2;
-
-    
     window.clear(Color::White);
     map.drawTile(window);
-    view.setCenter(position);
-    window.setView(view);
+    window.setView(camera.getView());
     
     window.draw(player.getBody());
     window.draw(player.getGun());

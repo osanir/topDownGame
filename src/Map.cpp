@@ -1,8 +1,8 @@
-#include "Map.h"
+#include "../include/Map.h"
 
 Map::Map(){
     /* createRandomObjects(); */
-    tileset_texture.loadFromFile("tilemap2.jpeg");
+    tileset_texture.loadFromFile("res/tilemap.jpeg");
     tileset_spr.setTexture(tileset_texture);
     tileset_spr.setScale(1.0f , (float)1024/tileset_texture.getSize().y);
     readMap();
@@ -23,19 +23,20 @@ void Map::readMap(){
     tempMap.clear();
     map_tiles.clear();
 
-    ifstream openFile("map.txt");
+    ifstream openFile("res/map.txt");
 
     if(openFile.is_open()){
 
         int str;
         while(openFile >> str){
-            if( str != -1)
+            if( str != -1){
                 tempMap.push_back(str);
+                cout << str;
+            }
             else{
-
                 map_tiles.push_back(tempMap);
                 tempMap.clear();
-                cout<< endl;
+                cout << endl;
             }
 
         }
