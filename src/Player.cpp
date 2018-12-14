@@ -1,16 +1,15 @@
 #include "../include/Player.h"
 
 Player::Player(){
-    body.setRadius( 10 );
-    body.setOrigin( {body.getRadius(), body.getRadius()} );
+    body.setSize( {20,20} );
+    body.setOrigin( {body.getSize().x/2, body.getSize().y/2} );
     body.setPosition( {100, 100} );
     body.setFillColor(Color::Black);
 
-    gun.setSize( {body.getRadius()*2, body.getRadius()/2} );
+    gun.setSize( {body.getSize().x, body.getSize().y/4} );
     gun.setOrigin( {0, gun.getSize().y/2} );
     gun.setPosition( body.getOrigin() );
     gun.setFillColor(Color::Red);
-    
 }
 
 void Player::init(){
@@ -18,13 +17,13 @@ void Player::init(){
 
 void Player::update(RenderWindow *window, View view){
     if( isMovingLeft && velocity.x > -MAXSPEED )
-        velocity.x -= SPEED;
+        velocity.x -= ACCELERATION;
     if( isMovingRight && velocity.x < MAXSPEED )
-        velocity.x += SPEED;
+        velocity.x += ACCELERATION;
     if( isMovingUp && velocity.y > -MAXSPEED)
-        velocity.y -= SPEED;
+        velocity.y -= ACCELERATION;
     if( isMovingDown && velocity.y < MAXSPEED)
-        velocity.y += SPEED;
+        velocity.y += ACCELERATION;
 
     if( !isMovingLeft && !isMovingRight )
         velocity.x = lerp(velocity.x, 0, 0.1);
@@ -33,8 +32,7 @@ void Player::update(RenderWindow *window, View view){
     
 
     body.move(velocity);
-    body.setRotation(getAngleTowardPosition(window, view));
-    gun.setRotation(body.getRotation());
+    gun.setRotation(getAngleTowardPosition(window, view));
     gun.setPosition(body.getPosition());
     
     list<Bullet>::iterator iter = bullets.begin();
@@ -60,25 +58,25 @@ void Player::update(RenderWindow *window, View view){
 void Player::setDirection( char direction , bool isPressed){
     switch (direction){
         case 'A':
-            if( isPressed)
+            if( isPressed && canMoveLeft )
                 isMovingLeft = true;
             else
                 isMovingLeft = false;
             break;
         case 'D':
-            if( isPressed)
+            if( isPressed && canMoveRight )
                 isMovingRight = true;
             else
                 isMovingRight = false;
             break;
         case 'W':
-            if( isPressed)
+            if( isPressed && canMoveUp )
                 isMovingUp = true;
             else
                 isMovingUp = false;
             break;
         case 'S':
-            if( isPressed)
+            if( isPressed && canMoveDown )
                 isMovingDown = true;
             else
                 isMovingDown = false;
@@ -118,16 +116,49 @@ void Player::fire(){
 }
 
 void Player::collision(list<RectangleShape*> gameObjects){
-    for( auto iter : gameObjects){
-        if( body.getGlobalBounds().intersects(iter->getGlobalBounds()))
-            body.move({-velocity.x, -velocity.y});
+    for( auto wall : gameObjects){
+        // wall top, player bottom
+        if( body.getGlobalBounds().intersects({ wall->getPosition().x, wall->getPosition().y+wall->getSize().y, wall->getSize().x, 2}) ){
+            body.move({0, fabs(velocity.y)});
+            canMoveUp = false;
+            velocity.y = 0;
+        }
+        else 
+            canMoveUp = true;
+
+        // wall bottom, player top
+        if( body.getGlobalBounds().intersects({ wall->getPosition().x, wall->getPosition().y-2, wall->getSize().x, 2}) ){
+            body.move({0, -fabs(velocity.y)});
+            canMoveDown = false;
+            velocity.y = 0;
+        }
+        else
+            canMoveDown = true;
+
+        // wall left, player right
+        if( body.getGlobalBounds().intersects({ wall->getPosition().x+wall->getSize().x, wall->getPosition().y, 2, wall->getSize().y}) ){
+            body.move({fabs(velocity.x), 0});
+            canMoveLeft = false;
+            velocity.x = 0;
+        }
+        else
+            canMoveLeft = true;
+
+        // wall right, player left
+        if( body.getGlobalBounds().intersects({ wall->getPosition().x-2, wall->getPosition().y, 2, wall->getSize().y}) ){
+            body.move({-fabs(velocity.x), 0});
+            canMoveRight = false;
+            velocity.x = 0;
+        }
+        else
+            canMoveRight = true;
     }
 }
 
 
 // GET
 
-CircleShape Player::getBody(){
+RectangleShape Player::getBody(){
     return body;
 }
 

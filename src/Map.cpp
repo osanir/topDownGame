@@ -31,12 +31,10 @@ void Map::importMap(){
         while(openFile >> str){
             if( str != -1){
                 tempMap.push_back(str);
-                cout << str;
             }
             else{
                 map_tiles.push_back(tempMap);
                 tempMap.clear();
-                cout << endl;
             }
 
         }
