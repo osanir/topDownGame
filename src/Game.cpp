@@ -32,14 +32,18 @@ void Game::processEvents(){
                 break;
         }
         if(Mouse::isButtonPressed(Mouse::Button::Left))
-            player.fire();
+            player.setFireStatement( true );
+        else 
+            player.setFireStatement( false );
     }
 }
 
 void Game::update(){
-    player.update(&window);
-    player.collision(map.getSolidObjets());
-    camera.update(player.getBody().getPosition());
+    player.update(&window, camera.getView());
+    player.collision(map.getSolidObjects());
+    camera.update(player.getBody().getPosition(), map.getLayoutSize());
+
+    
 }
 
 void Game::render()
@@ -66,6 +70,8 @@ void Game::render()
 }
 
 void Game::handlePlayerInput(bool keyIsPressed){
+
+
     if( !keyIsPressed ){
         if( !Keyboard::isKeyPressed(Keyboard::A) )
             player.setDirection('A', false);

@@ -1,10 +1,9 @@
 #include "GameEngine.h"
 
-
 class Camera{
 public:
     Camera();
-    void update(Vector2f);
+    void update(Vector2f, Vector2f);
     View getView();
 private:
     View view;

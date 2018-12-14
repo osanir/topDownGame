@@ -1,11 +1,11 @@
 #include "../include/Map.h"
 
 Map::Map(){
-    /* createRandomObjects(); */
+    pixel = 42;
     tileset_texture.loadFromFile("res/tilemap.jpeg");
     tileset_spr.setTexture(tileset_texture);
     tileset_spr.setScale(1.0f , (float)1024/tileset_texture.getSize().y);
-    readMap();
+    importMap();
     initMap();
 }
 
@@ -18,7 +18,7 @@ Map::Map(){
     }
 } */
 
-void Map::readMap(){
+void Map::importMap(){
     vector<int> tempMap;
     tempMap.clear();
     map_tiles.clear();
@@ -45,9 +45,8 @@ void Map::readMap(){
 }
 
 void Map::drawTile(RenderWindow &window){
-
     for(int y = 0 ; y < map_tiles.size() ; y ++ ){
-        for(int x =0 ; x< map_tiles[1].size() ; x++){
+        for(int x =0 ; x< map_tiles[0].size() ; x++){
             //tek bir sprite ın boyutu kadar yer ayır
             tileset_spr.setPosition(x * 42.f , y*42.f);
             //resimden parça parça seç
@@ -56,12 +55,12 @@ void Map::drawTile(RenderWindow &window){
         }
     }
 }
-void Map::initMap(){
 
+void Map::initMap(){
     for(int y = 0 ; y < map_tiles.size() ; y ++ ){
-        for(int x =0 ; x< map_tiles[1].size() ; x++){
+        for(int x =0 ; x< map_tiles[0].size() ; x++){
             //tek bir sprite ın boyutu kadar yer ayır
-            tileset_spr.setPosition(x * 42.f , y*42.f);
+            tileset_spr.setPosition(x * pixel , y * pixel);
             //resimden parça parça seç
             tileset_spr.setTextureRect(IntRect(map_tiles[y][x]*42 , 0 ,42 , 42));
             if(map_tiles[y][x] == 0){
@@ -74,9 +73,15 @@ void Map::initMap(){
             }
         }
     } 
-
+    layoutSize.x = map_tiles[0].size() * pixel;
+    layoutSize.y = map_tiles.size() * pixel;
 
 }
-list<RectangleShape*> Map::getSolidObjets(){
+
+list<RectangleShape*> Map::getSolidObjects(){
     return solidObjects;
+}
+
+Vector2f Map::getLayoutSize(){
+    return layoutSize;
 }

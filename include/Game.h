@@ -6,8 +6,7 @@
 using namespace std;
 using namespace sf;
 
-class Game
-{
+class Game{
 public:
     Game();
     void run();
@@ -19,7 +18,6 @@ private:
     void handlePlayerInput(bool isPressed);
     
     Camera camera;
-
     Player player;
     RenderWindow window;
     Map map;

@@ -1,7 +1,7 @@
+#include "GameEngine.h"
 #include <string>
 #include <list>
 #include <cmath>
-#include "GameEngine.h"
 
 
 struct Bullet{
@@ -22,8 +22,9 @@ class Player{
 public:
     Player();
     void init();
-    void update(RenderWindow *window);
+    void update(RenderWindow *window, View view);
     void setDirection( char direction , bool isPressed);
+    void setFireStatement( bool isPressed );
     void move(Vector2f);
     void fire();
     void collision(list<RectangleShape*>);
@@ -33,11 +34,12 @@ public:
 
 private:
     float lerp(float x, float y, float z);
-    float getAngleTowardPosition(RenderWindow *window);
+    float getAngleTowardPosition(RenderWindow *window, View view);
 
     CircleShape body;
     RectangleShape gun;
     list<Bullet> bullets;
+    float fireRate = 0.2;
 
     const float MAXSPEED = 5;
     const float SPEED    = 0.5;
@@ -47,5 +49,9 @@ private:
     bool isMovingLeft  = false;
     bool isMovingUp    = false;
     bool isMovingDown  = false;
+    bool isFiring      = false;
+    bool canFire = false;
+
+    Clock clock;
 
 };

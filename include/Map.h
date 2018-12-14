@@ -7,14 +7,17 @@ class Map{
 public:
     Map();
     void initMap();
-    list<RectangleShape*> getSolidObjets();
-    void readMap();
+    list<RectangleShape*> getSolidObjects();
+    void importMap();
     void drawTile(RenderWindow &window);
+    Vector2f getLayoutSize();
 private:
     /* void createRandomObjects(); */
     Texture tileset_texture ;
     Sprite tileset_spr;
     vector <vector<int> > map_tiles;
     list<RectangleShape*> solidObjects;
+    float pixel;
+    Vector2f layoutSize;
 
 };

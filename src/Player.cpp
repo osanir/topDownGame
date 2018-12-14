@@ -16,7 +16,7 @@ Player::Player(){
 void Player::init(){
 }
 
-void Player::update(RenderWindow *window){
+void Player::update(RenderWindow *window, View view){
     if( isMovingLeft && velocity.x > -MAXSPEED )
         velocity.x -= SPEED;
     if( isMovingRight && velocity.x < MAXSPEED )
@@ -33,9 +33,10 @@ void Player::update(RenderWindow *window){
     
 
     body.move(velocity);
-    body.setRotation(getAngleTowardPosition(window));
+    body.setRotation(getAngleTowardPosition(window, view));
     gun.setRotation(body.getRotation());
     gun.setPosition(body.getPosition());
+    
     list<Bullet>::iterator iter = bullets.begin();
     while( iter != bullets.end() ){
         iter->body.move(iter->direction);
@@ -46,10 +47,14 @@ void Player::update(RenderWindow *window){
         iter++;
     }
     
-    CircleShape shape(10);
-    shape.setFillColor(Color::Cyan);
+    if(clock.getElapsedTime().asMilliseconds() > fireRate*1000){
+        canFire = true;
+        clock.restart();
+    }
+
+    if( isFiring && canFire)
+        fire();
     
-    window->draw( shape );
 }
 
 void Player::setDirection( char direction , bool isPressed){
@@ -83,6 +88,10 @@ void Player::setDirection( char direction , bool isPressed){
     }
 }
 
+void Player::setFireStatement( bool isPressed ){
+    isFiring = isPressed;
+}
+
 void Player::move(Vector2f direction){
     // TODO: FIX DIAGONAL MOVEMENT SPEED
     body.move(direction);
@@ -90,7 +99,6 @@ void Player::move(Vector2f direction){
 }
 
 void Player::fire(){
-    // TODO: SET FIRE RATE
     Bullet newBullet;
     newBullet.body.setRadius(5);
     newBullet.body.setFillColor(Color::Black);
@@ -106,6 +114,7 @@ void Player::fire(){
 
     newBullet.direction = Vector2f( dirX, dirY );
     bullets.push_back( newBullet );
+    canFire = false;
 }
 
 void Player::collision(list<RectangleShape*> gameObjects){
@@ -136,7 +145,7 @@ float Player::lerp(float x, float y, float z) {
     return ((1.0f - z) * x) + (z * y);      
 }
 
-float Player::getAngleTowardPosition(RenderWindow *window){
+float Player::getAngleTowardPosition(RenderWindow *window, View view){
     float y, y1;
     float x, x1;
     float m;
@@ -144,8 +153,8 @@ float Player::getAngleTowardPosition(RenderWindow *window){
     x = body.getPosition().x;
     y = body.getPosition().y;
 
-    x1 = Mouse::getPosition(*window).x;
-    y1 = Mouse::getPosition(*window).y;
+    x1 = (view.getCenter().x - SCREEN_WIDTH/2)  + Mouse::getPosition(*window).x;
+    y1 = (view.getCenter().y - SCREEN_HEIGHT/2) + Mouse::getPosition(*window).y;
 
 
     m = (y-y1) / (x-x1);
