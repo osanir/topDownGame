@@ -191,6 +191,6 @@ float Player::getAngleTowardPosition(RenderWindow *window, View view){
     m = (y-y1) / (x-x1);
     m = atan(m);
     m = m * 180 / 3.14159265;
-    if( x > x1) m += 180;
+    if( x >= x1) m += 180;
     return m;
 }

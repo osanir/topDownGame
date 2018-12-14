@@ -17,7 +17,7 @@ private:
     Sprite tileset_spr;
     vector <vector<int> > map_tiles;
     list<RectangleShape*> solidObjects;
-    float pixel;
+    float pixelScale;
     Vector2f layoutSize;
 
 };

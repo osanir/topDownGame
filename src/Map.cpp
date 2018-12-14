@@ -1,10 +1,10 @@
 #include "../include/Map.h"
 
 Map::Map(){
-    pixel = 42;
+    pixelScale = 42;
     tileset_texture.loadFromFile("res/tilemap.jpeg");
     tileset_spr.setTexture(tileset_texture);
-    tileset_spr.setScale(1.0f , (float)1024/tileset_texture.getSize().y);
+    tileset_spr.setScale(1.0f , 1.0f);
     importMap();
     initMap();
 }
@@ -48,7 +48,7 @@ void Map::drawTile(RenderWindow &window){
             //tek bir sprite ın boyutu kadar yer ayır
             tileset_spr.setPosition(x * 42.f , y*42.f);
             //resimden parça parça seç
-            tileset_spr.setTextureRect(IntRect(map_tiles[y][x]*42 , 0 ,42 , 42));
+            tileset_spr.setTextureRect(IntRect(map_tiles[y][x] * pixelScale, 0 , pixelScale, pixelScale));
             window.draw(tileset_spr);
         }
     }
@@ -58,21 +58,21 @@ void Map::initMap(){
     for(int y = 0 ; y < map_tiles.size() ; y ++ ){
         for(int x =0 ; x< map_tiles[0].size() ; x++){
             //tek bir sprite ın boyutu kadar yer ayır
-            tileset_spr.setPosition(x * pixel , y * pixel);
+            tileset_spr.setPosition(x * pixelScale , y * pixelScale);
             //resimden parça parça seç
-            tileset_spr.setTextureRect(IntRect(map_tiles[y][x]*42 , 0 ,42 , 42));
+            tileset_spr.setTextureRect(IntRect(map_tiles[y][x] * pixelScale , 0, pixelScale, pixelScale));
             if(map_tiles[y][x] == 0){
                 
-                RectangleShape* shape = new RectangleShape({42,42});
+                RectangleShape* shape = new RectangleShape({pixelScale, pixelScale});
                 shape->setFillColor(Color::Black);
-                shape->setPosition({x * 42.f  , y*42.f});
+                shape->setPosition({x * pixelScale, y * pixelScale});
                 solidObjects.push_back(shape);
 
             }
         }
     } 
-    layoutSize.x = map_tiles[0].size() * pixel;
-    layoutSize.y = map_tiles.size() * pixel;
+    layoutSize.x = map_tiles[0].size() * pixelScale;
+    layoutSize.y = map_tiles.size() * pixelScale;
 
 }
 
