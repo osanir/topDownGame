@@ -42,25 +42,20 @@ void Game::update(){
     player.update(&window, camera.getView());
     player.collision(map.getSolidObjects());
     camera.update(player.getBody().getPosition(), map.getLayoutSize());
-
-    
+    window.setView(camera.getView());
 }
 
 void Game::render()
 {
     window.clear(Color::White);
     map.drawTile(window);
-    window.setView(camera.getView());
     
     window.draw(player.getBody());
     window.draw(player.getGun());
+    window.draw(player.getSprite());
     
-
-    list<Bullet> bullets = player.getBullets();
-    list<Bullet>::iterator iter = bullets.begin();
-    while( iter != bullets.end() ){
-        window.draw(iter->body);
-        iter++;
+    for( auto &bullet : player.getBullets() ){
+        window.draw(bullet.body);
     }
 
 /*     for(auto iter : map.getSolidObjets() ){

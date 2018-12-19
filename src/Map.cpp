@@ -1,8 +1,8 @@
 #include "../include/Map.h"
 
 Map::Map(){
-    pixelScale = 42;
-    tileset_texture.loadFromFile("res/tilemap.jpeg");
+    pixelScale = 128;
+    tileset_texture.loadFromFile("res/tiles.png");
     tileset_spr.setTexture(tileset_texture);
     tileset_spr.setScale(1.0f , 1.0f);
     importMap();
@@ -15,7 +15,7 @@ Map::Map(){
         shape->setFillColor(Color::Black);
         shape->setPosition({float(rand()%1024), float(rand()%768)});
         solidObjects.push_back(shape);
-    }
+    }f
 } */
 
 void Map::importMap(){
@@ -46,7 +46,7 @@ void Map::drawTile(RenderWindow &window){
     for(int y = 0 ; y < map_tiles.size() ; y ++ ){
         for(int x =0 ; x< map_tiles[0].size() ; x++){
             //tek bir sprite ın boyutu kadar yer ayır
-            tileset_spr.setPosition(x * 42.f , y*42.f);
+            tileset_spr.setPosition(x * pixelScale , y*pixelScale);
             //resimden parça parça seç
             tileset_spr.setTextureRect(IntRect(map_tiles[y][x] * pixelScale, 0 , pixelScale, pixelScale));
             window.draw(tileset_spr);
@@ -61,8 +61,9 @@ void Map::initMap(){
             tileset_spr.setPosition(x * pixelScale , y * pixelScale);
             //resimden parça parça seç
             tileset_spr.setTextureRect(IntRect(map_tiles[y][x] * pixelScale , 0, pixelScale, pixelScale));
-            if(map_tiles[y][x] == 0){
-                
+            
+            // if its wall
+            if(map_tiles[y][x] == TILES::WALL){
                 RectangleShape* shape = new RectangleShape({pixelScale, pixelScale});
                 shape->setFillColor(Color::Black);
                 shape->setPosition({x * pixelScale, y * pixelScale});

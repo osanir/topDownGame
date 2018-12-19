@@ -3,6 +3,11 @@
 #include <fstream>
 #include <vector>
 
+enum TILES{
+    WALL  = 0,
+    GRASS = 1
+};
+
 class Map{
 public:
     Map();

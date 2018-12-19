@@ -5,9 +5,15 @@
 
 
 struct Bullet{
-    CircleShape body;
+    RectangleShape body;
     Vector2f direction;
-    float speed = 4;
+    float speed = 3;
+    Bullet(){
+        body.setSize({20,9});
+        //body.setRadius(30);
+        //body.setFillColor(Color::Black);
+        body.setOrigin({0, body.getSize().y});
+    };
 };
 
 /*
@@ -30,6 +36,7 @@ public:
     void collision(list<RectangleShape*>);
     RectangleShape getBody();
     RectangleShape getGun();
+    Sprite getSprite();
     list<Bullet> getBullets();
 
 private:
@@ -37,6 +44,11 @@ private:
     float getAngleTowardPosition(RenderWindow *window, View view);
 
     RectangleShape body;
+    Texture textures[2];
+        // texture[0]   :   player texture
+        // texture[1]   :   bullet texture
+    Sprite playerSprite;
+
     RectangleShape gun;
     list<Bullet> bullets;
     float fireRate = 0.2;
@@ -55,7 +67,7 @@ private:
     bool canMoveLeft  = true;
     bool canMoveUp    = true;
     bool canMoveDown  = true;
-    bool canFire      = false;
+    bool canFire      = true;
 
     Clock clock;
 
