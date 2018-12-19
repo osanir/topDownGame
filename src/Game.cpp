@@ -4,6 +4,7 @@ Game::Game() : window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Top Down"){
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60);
     window.setKeyRepeatEnabled(true);
+
 }
 
 void Game::run(){
@@ -28,10 +29,19 @@ void Game::processEvents(){
             case Event::KeyPressed:
                 handlePlayerInput(true);
                 break;
+            case Event::GainedFocus:
+                gameFocus = true;
+                multiplayer.setUpdateStatus(true);
+                break;
+            case Event::LostFocus:
+                gameFocus = false;
+                multiplayer.setUpdateStatus(false);
+                break;
             default:
                 break;
         }
-        if(Mouse::isButtonPressed(Mouse::Button::Left))
+        
+        if(Mouse::isButtonPressed(Mouse::Button::Left) && gameFocus)
             player.setFireStatement( true );
         else 
             player.setFireStatement( false );
@@ -43,6 +53,10 @@ void Game::update(){
     player.collision(map.getSolidObjects());
     camera.update(player.getBody().getPosition(), map.getLayoutSize());
     window.setView(camera.getView());
+
+    multiplayer.update(player, player2);
+
+
 }
 
 void Game::render()
@@ -53,8 +67,13 @@ void Game::render()
     window.draw(player.getBody());
     window.draw(player.getGun());
     window.draw(player.getSprite());
+    window.draw(player2.playerSprite);
     
     for( auto &bullet : player.getBullets() ){
+        window.draw(bullet.body);
+    }
+
+    for( auto &bullet : player2.bullets){
         window.draw(bullet.body);
     }
 

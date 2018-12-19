@@ -1,5 +1,12 @@
 #include "../include/Player.h"
 
+OtherPlayers::OtherPlayers(){
+    texture.loadFromFile("res/player.png");
+    playerSprite.setScale({64/float(texture.getSize().x), 64/float(texture.getSize().y)});
+    playerSprite.setTexture(texture);
+    playerSprite.setOrigin({float(texture.getSize().x)/2, float(texture.getSize().y)/2});
+}
+
 Player::Player(){
     body.setSize( {32,32} );
     body.setOrigin( {body.getSize().x/2, body.getSize().y/2} );

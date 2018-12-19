@@ -1,6 +1,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include <SFML/Network.hpp>
 #include <iostream>
 
 #define SCREEN_WIDTH 1024

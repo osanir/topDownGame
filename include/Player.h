@@ -23,6 +23,12 @@ struct Gun{
     int capasity;
 };
 */
+struct OtherPlayers{
+    OtherPlayers();
+    Texture texture;
+    Sprite playerSprite;
+    list<Bullet> bullets;
+};
 
 class Player{
 public:
@@ -39,14 +45,14 @@ public:
     Sprite getSprite();
     list<Bullet> getBullets();
 
+    Texture textures[2];
+        // texture[0]   :   player texture
+        // texture[1]   :   bullet texture
 private:
     float lerp(float x, float y, float z);
     float getAngleTowardPosition(RenderWindow *window, View view);
 
     RectangleShape body;
-    Texture textures[2];
-        // texture[0]   :   player texture
-        // texture[1]   :   bullet texture
     Sprite playerSprite;
 
     RectangleShape gun;

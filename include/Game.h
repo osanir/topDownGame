@@ -1,7 +1,7 @@
 #include "GameEngine.h"
-#include "Player.h"
 #include "Map.h"
 #include "Camera.h"
+#include "Multiplayer.h"
 
 using namespace std;
 using namespace sf;
@@ -17,8 +17,13 @@ private:
     void render();
     void handlePlayerInput(bool isPressed);
     
+    bool gameFocus;
+
     Camera camera;
     Player player;
+    OtherPlayers player2;
     RenderWindow window;
     Map map;
+    Multiplayer multiplayer;
+    
 };
