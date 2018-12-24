@@ -54,12 +54,6 @@ void Player::update(RenderWindow *window, View view){
     playerSprite.setPosition(body.getPosition());
     playerSprite.setRotation(getAngleTowardPosition(window, view));
 
-    for( auto &bullet : bullets ){
-        bullet.body.move(bullet.direction);
-        // TODO: DESTROY BULLETS WHICH ARE OUTSIDE THE LAYOUT
-        /*if( iter->body.getPosition().x > window->getSize().x || iter->body.getPosition().x < 0 || iter->body.getPosition().y > window->getSize().y || iter->body.getPosition().x < 0){
-        }*/
-    }
         
     // Every 0.2 Seconds
     if(clock.getElapsedTime().asMilliseconds() > fireRate*1000){
@@ -70,6 +64,11 @@ void Player::update(RenderWindow *window, View view){
     if( isFiring && canFire)
         fire();
     
+    for( auto &bullet : bullets ){
+        bullet.body.move(bullet.direction);
+    }
+   
+
 }
 
 void Player::setDirection( char direction , bool isPressed){

@@ -9,8 +9,10 @@ public:
     Multiplayer();
     void setUpdateStatus(bool);
     void update(Player&, OtherPlayers&);
+    char getConnectionType();
+    TcpSocket socket;
 private:
     bool canUpdate;
-    TcpSocket socket;
     IpAddress ip = IpAddress::getLocalAddress();
+    char connectionType;
 };

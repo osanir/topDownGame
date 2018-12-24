@@ -2,7 +2,7 @@
 #include "Map.h"
 #include "Camera.h"
 #include "Multiplayer.h"
-
+#include <list>
 using namespace std;
 using namespace sf;
 
@@ -25,5 +25,6 @@ private:
     RenderWindow window;
     Map map;
     Multiplayer multiplayer;
-    
+    Enemies enemies;
+    list<EnemySpr*> otherEnemies;   
 };

@@ -1,6 +1,8 @@
 #include "GameEngine.h"
+#include "Enemies.h"
 #include <string>
 #include <list>
+#include <vector>
 #include <cmath>
 
 
@@ -10,19 +12,10 @@ struct Bullet{
     float speed = 3;
     Bullet(){
         body.setSize({20,9});
-        //body.setRadius(30);
-        //body.setFillColor(Color::Black);
         body.setOrigin({0, body.getSize().y});
     };
 };
 
-/*
-struct Gun{
-    string name;
-    int fireRate;
-    int capasity;
-};
-*/
 struct OtherPlayers{
     OtherPlayers();
     Texture texture;
@@ -44,6 +37,7 @@ public:
     RectangleShape getGun();
     Sprite getSprite();
     list<Bullet> getBullets();
+    list<Bullet> bullets;
 
     Texture textures[2];
         // texture[0]   :   player texture
@@ -56,7 +50,6 @@ private:
     Sprite playerSprite;
 
     RectangleShape gun;
-    list<Bullet> bullets;
     float fireRate = 0.2;
 
     const float MAXSPEED = 5;
