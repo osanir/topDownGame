@@ -2,6 +2,9 @@
 #include "Map.h"
 #include "Camera.h"
 #include "Multiplayer.h"
+#include "Menu.h"
+#include "GameSound.h"
+
 #include <list>
 using namespace std;
 using namespace sf;
@@ -26,5 +29,10 @@ private:
     Map map;
     Multiplayer multiplayer;
     Enemies enemies;
-    list<EnemySpr*> otherEnemies;   
+    list<EnemySpr*> otherEnemies;
+
+    Menu menu;
+
+    GameSound menuMusic;
+    GameSound menuButtonSound;   
 };

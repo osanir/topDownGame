@@ -4,6 +4,10 @@ Game::Game() : window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Top Down"){
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60);
     window.setKeyRepeatEnabled(true);
+
+    menuMusic.setMusicFile("res/TimeMachine.ogg");
+    menuMusic.playMusic();
+    menuButtonSound.setSoundFile("res/button.wav");
 }
 
 void Game::run(){
@@ -27,8 +31,38 @@ void Game::processEvents(){
                 window.close();
                 break;
             case Event::KeyReleased:
-                handlePlayerInput(false);
-                break;
+                if(menu.getMenuState()){
+                    switch(event.key.code){
+                        case Keyboard::Up:
+                            menu.MoveUp();
+                            menuButtonSound.playSound();
+                            break;
+                        case Keyboard::Down:
+                            menuButtonSound.playSound();
+                            menu.MoveDown();
+                            break;
+                        case Keyboard::Return:
+                            switch(menu.getPressedItem()){
+                                case 0:
+                                    //start the game
+                                    menu.setMenuState(false);
+                                    break;
+                                case 1:
+                                    cout<<"Coming soon..."<<endl;
+                                case 2:
+                                    window.close();
+                                default:
+                                    break;
+                            }
+                        default:
+                            break;
+                    }
+                }
+                else{
+                    handlePlayerInput(false);
+                    break;
+                }
+
             case Event::KeyPressed:
                 handlePlayerInput(true);
                 break;
@@ -123,7 +157,12 @@ void Game::update(){
 
 void Game::render()
 {
-    window.clear(Color::White);
+    window.clear(Color::Black);
+    if(menu.getMenuState()){
+        menu.drawMenu(window);
+    }
+    else{
+    menuMusic.pauseMusic();
     map.drawTile(window);
     
 //    window.draw(player.getBody());
@@ -148,8 +187,10 @@ void Game::render()
     // Drawing that receiving zombie positions from server
     for( auto enemy : otherEnemies )
         window.draw(enemy->getSprite() );
+    
+    }
 
-     window.display();
+    window.display();
 }
 
 void Game::handlePlayerInput(bool keyIsPressed){
