@@ -162,31 +162,31 @@ void Game::render()
         menu.drawMenu(window);
     }
     else{
-    menuMusic.pauseMusic();
-    map.drawTile(window);
-    
-//    window.draw(player.getBody());
-//    window.draw(player.getGun());
-    window.draw(player.getSprite());
-    window.draw(player2.playerSprite);
-    
-    // Drawing bullets
-    for( auto &bullet : player.getBullets() ){
-        window.draw(bullet.body);
-    }
+        menuMusic.pauseMusic();
+        map.drawTile(window);
+        
+    //    window.draw(player.getBody());
+    //    window.draw(player.getGun());
+        window.draw(player.getSprite());
+        window.draw(player2.playerSprite);
+        
+        // Drawing bullets
+        for( auto &bullet : player.getBullets() ){
+            window.draw(bullet.body);
+        }
 
-    // Drawing bullets which came from server
-    for( auto &bullet : player2.bullets){
-        window.draw(bullet.body);
-    }
+        // Drawing bullets which came from server
+        for( auto &bullet : player2.bullets){
+            window.draw(bullet.body);
+        }
 
-    // Drawing zombies
-    for( auto enemy : enemies.getEnemies() )
-        window.draw(enemy->getSprite());
-    
-    // Drawing that receiving zombie positions from server
-    for( auto enemy : otherEnemies )
-        window.draw(enemy->getSprite() );
+        // Drawing zombies
+        for( auto enemy : enemies.getEnemies() )
+            window.draw(enemy->getSprite());
+        
+        // Drawing that receiving zombie positions from server
+        for( auto enemy : otherEnemies )
+            window.draw(enemy->getSprite() );
     
     }
 
