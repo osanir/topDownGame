@@ -1,2 +1,2 @@
 # topDownGame
-First SFML Game    ilk commit denemesi
+Simple top down multiplayer sfml game
